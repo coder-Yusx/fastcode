@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yusx.demo.sys.mapper.SysUserMapper">
+
+    <select id="findRoles" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            r.roleCode
+        FROM
+            sysUser u
+            JOIN sysUserRole ur
+            JOIN sysRole r ON u.userId = ur.userid
+            AND ur.roleid = r.roleId
+            where u.userName = #{_parameter,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findPermissionsCode" parameterType="java.lang.String" resultType="java.lang.String">
+      SELECT
+            p.perCode
+        FROM
+            sysUser u
+            JOIN sysUserRole ur
+            JOIN sysRole r
+            JOIN sysRolePermission rp
+            JOIN sysPermission p ON u.userId = ur.userid
+            AND ur.roleid = r.roleId
+            AND r.roleId = rp.roleId
+            AND rp.permissionid = p.perId
+            where u.userName = #{_parameter,jdbcType=VARCHAR}
+    </select>
+
+    <resultMap id="MenuResult" type="com.yusx.demo.sys.entity.Menu">
+        <id property="code" column="perId"></id>
+        <result property="name" column="perName"></result>
+        <result property="parent" column="parent"></result>
+    </resultMap>
+
+    <select id="findPermissions" parameterType="java.lang.String" resultMap="MenuResult">
+      SELECT
+            p.perId,p.perName,p.parent
+        FROM
+            sysUser u
+            JOIN sysUserRole ur
+            JOIN sysRole r
+            JOIN sysRolePermission rp
+            JOIN sysPermission p ON u.userId = ur.userid
+            AND ur.roleid = r.roleId
+            AND r.roleId = rp.roleId
+            AND rp.permissionid = p.perId
+            where u.userName = #{_parameter,jdbcType=VARCHAR}
+    </select>
+</mapper>
