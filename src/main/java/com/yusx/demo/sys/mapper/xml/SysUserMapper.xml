@@ -29,14 +29,27 @@
     </select>
 
     <resultMap id="MenuResult" type="com.yusx.demo.sys.entity.Menu">
-        <id property="code" column="perId"></id>
-        <result property="name" column="perName"></result>
-        <result property="parent" column="parent"></result>
+        <id property="id" column="perId"/>
+        <result property="code" column="perCode"/>
+        <result property="name" column="perName"/>
+        <result property="path" column="perPath"/>
+        <result property="parent" column="parent"/>
+
+        <result property="routerName" column="routerName"/>
+        <result property="routerPath" column="routerPath"/>
+        <result property="routerComponenet" column="routerComponenet"/>
     </resultMap>
 
     <select id="findPermissions" parameterType="java.lang.String" resultMap="MenuResult">
       SELECT
-            p.perId,p.perName,p.parent
+            p.perId,
+            p.perCode,
+            p.perName,
+            p.perPath,
+            p.parent,
+            p.routerName,
+            p.routerPath,
+            p.routerComponenet
         FROM
             sysUser u
             JOIN sysUserRole ur

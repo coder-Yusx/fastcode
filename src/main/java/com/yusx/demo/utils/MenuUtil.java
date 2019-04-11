@@ -49,6 +49,28 @@ public class MenuUtil {
         }
     }
 
+    //转化
+    private static List<Node> changeTree(List<Menu> menuList){
+        if(menuList == null) return null;
+        List<Node> nodes = new ArrayList<Node>();
+        for(Menu menu:menuList){
+            Node node = new Node();
+            node.setCode(menu.getId());
+            node.setName(menu.getName());
+            if(menu.getChildren() != null){
+                node.setNodes(changeTree(menu.getChildren()));
+            }
+            /*System.out.println(menu.getName());
+            if(menu.getChildren() !=null){
+                showTree(menu.getChildren());
+            }else{
+                return;
+            }*/
+            nodes.add(node);
+        }
+        return nodes;
+    }
+
     public static void main(String[] args) {
 
         Menu menu = new Menu("1","食材","0",null);
@@ -103,6 +125,8 @@ public class MenuUtil {
 
         List<Menu> menuList1 = getChildren(menuList, "1");
         //System.out.println(menuList1);
-        showTree(menuList1);
+        //showTree(menuList1);
+        List<Node> nodes = changeTree(menuList1);
+        System.out.println(nodes);
     }
 }

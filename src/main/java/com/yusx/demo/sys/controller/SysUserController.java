@@ -74,7 +74,7 @@ public class SysUserController {
         List<Menu> children = new ArrayList<Menu>();
         for(Menu menu : menus){
             if(menu.getParent() == id){
-                List<Menu> menus1 = treeMenu(menus, menu.getCode());
+                List<Menu> menus1 = treeMenu(menus, menu.getId());
                 if(menus1 == null) continue;
                 menu.setChildren(menus1);
                 children.add(menu);
