@@ -63,13 +63,38 @@ public class SysUserController {
     public JsonResult getMenus(){
         JsonResult result = new JsonResult();
         List<Menu> menus = sysUserService.findPermissions("qwert");
-        List<Menu> treeMenu = treeMenu(menus, -1);
+        Menu rootMenu = null;
+        if(menus != null && menus.size() > 0){
+            for (Menu menu : menus){
+                if(menu.getParent() == -1){
+                    rootMenu = menu;
+                }
+            }
+        }
+        Menu treeMenu = null;
+        if(rootMenu != null){
+            treeMenu = treeMenu(menus, rootMenu);
+        }
+        //List<Menu> treeMenu = treeMenu(menus, -1);
         result.success(treeMenu);
         return result;
     }
 
     //递归格式化菜单，把数据库中查出的菜单格式化成树形菜单
-    public List<Menu> treeMenu(List<Menu> menus,int id){
+    public Menu treeMenu(List<Menu> menus, Menu rootMenu){
+        if(menus == null) return null;
+        List<Menu> children = new ArrayList<Menu>();
+        for(Menu menu : menus){
+            if(menu.getParent() == rootMenu.getId()){
+                children.add(treeMenu(menus,menu));
+            }
+        }
+        if(children.size() != 0) rootMenu.setChildren(children);
+        return rootMenu;
+    }
+
+    //递归格式化菜单，把数据库中查出的菜单格式化成树形菜单
+    /*public List<Menu> treeMenu(List<Menu> menus,int id){
         if(menus == null) return null;
         List<Menu> children = new ArrayList<Menu>();
         for(Menu menu : menus){
@@ -82,7 +107,7 @@ public class SysUserController {
         }
         //if(children.size() == 0) return children;
         return children;
-    }
+    }*/
 
     @RequestMapping(value = "/roles")
     public JsonResult getRoles(){

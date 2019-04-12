@@ -49,7 +49,7 @@
             p.parent,
             p.routerName,
             p.routerPath,
-            p.routerComponenet
+            p.routerComponent
         FROM
             sysUser u
             JOIN sysUserRole ur
