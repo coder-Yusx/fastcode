@@ -1,6 +1,7 @@
 package com.yusx.demo.sys.service;
 
 import com.yusx.demo.sys.entity.Menu;
+import com.yusx.demo.sys.entity.Router;
 import com.yusx.demo.sys.entity.SysPermission;
 import com.yusx.demo.sys.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -18,9 +19,11 @@ import java.util.Set;
  */
 public interface ISysUserService extends IService<SysUser> {
 
-    Set<String> findRoles(String username);
+    Set<String> findRoleCodesByUsername(String username);
 
-    Set<String> findPermissionsCode(String username);
+    Set<String> findPermissionCodesByUsername(String username);
 
-    List<Menu> findPermissions(String username);
+    List<Menu> findUserMenusByUsername(String username);
+
+    List<Router> findUserRoutersByUsername(String username);
 }

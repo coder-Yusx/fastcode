@@ -1,6 +1,7 @@
 package com.yusx.demo.sys.mapper;
 
 import com.yusx.demo.sys.entity.Menu;
+import com.yusx.demo.sys.entity.Router;
 import com.yusx.demo.sys.entity.SysPermission;
 import com.yusx.demo.sys.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -17,9 +18,11 @@ import java.util.List;
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    List<String> findRoles(String username);
+    List<String> selectRoleCodesByUsername(String username);
 
-    List<String> findPermissionsCode(String username);
+    List<String> selectPermissionCodesByUsername(String username);
 
-    List<Menu> findPermissions(String username);
+    List<Menu> selectUserMenusByUsername(String username);
+
+    List<Router> selectUserRoutersByUsername(String username);
 }

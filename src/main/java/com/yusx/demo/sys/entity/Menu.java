@@ -14,12 +14,6 @@ public class Menu {
 
     private int parent;
 
-    private String routerPath;
-
-    private String routerName;
-
-    private String routerComponent;
-
     private List<Menu> children;
 
     public String getName() {
@@ -68,29 +62,5 @@ public class Menu {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public String getRouterPath() {
-        return routerPath;
-    }
-
-    public void setRouterPath(String routerPath) {
-        this.routerPath = routerPath;
-    }
-
-    public String getRouterName() {
-        return routerName;
-    }
-
-    public void setRouterName(String routerName) {
-        this.routerName = routerName;
-    }
-
-    public String getRouterComponent() {
-        return routerComponent;
-    }
-
-    public void setRouterComponent(String routerComponent) {
-        this.routerComponent = routerComponent;
     }
 }

@@ -3,6 +3,7 @@ package com.yusx.demo.sys.controller;
 
 import com.yusx.demo.common.JsonResult;
 import com.yusx.demo.sys.entity.Menu;
+import com.yusx.demo.sys.entity.Router;
 import com.yusx.demo.sys.entity.SysPermission;
 import com.yusx.demo.sys.service.ISysUserService;
 import org.apache.shiro.SecurityUtils;
@@ -62,7 +63,7 @@ public class SysUserController {
     @RequestMapping(value = "/menus")
     public JsonResult getMenus(){
         JsonResult result = new JsonResult();
-        List<Menu> menus = sysUserService.findPermissions("qwert");
+        List<Menu> menus = sysUserService.findUserMenusByUsername("qwert");
         Menu rootMenu = null;
         if(menus != null && menus.size() > 0){
             for (Menu menu : menus){
@@ -79,7 +80,6 @@ public class SysUserController {
         result.success(treeMenu);
         return result;
     }
-
     //递归格式化菜单，把数据库中查出的菜单格式化成树形菜单
     public Menu treeMenu(List<Menu> menus, Menu rootMenu){
         if(menus == null) return null;
@@ -109,10 +109,20 @@ public class SysUserController {
         return children;
     }*/
 
-    @RequestMapping(value = "/roles")
+    @RequestMapping(value = "/routers")
+    public JsonResult getRouters(){
+        JsonResult result = new JsonResult();
+
+        //如果是多级菜单需要递归成树形
+        List<Router> qwert = sysUserService.findUserRoutersByUsername("qwert");
+        result.success(qwert);
+        return result;
+    }
+
+    /*@RequestMapping(value = "/roles")
     public JsonResult getRoles(){
 
-        Set<String> qwert = sysUserService.findRoles("qwert");
+        Set<String> qwert = sysUserService.findRoleCodesByUsername("qwert");
         JsonResult jr = new JsonResult();
         jr.success(qwert);
         return jr;
@@ -121,10 +131,10 @@ public class SysUserController {
     @RequestMapping(value = "/permissionscode")
     public JsonResult getPermission(){
 
-        Set<String> qwert = sysUserService.findPermissionsCode("qwert");
+        Set<String> qwert = sysUserService.findPermissionCodesByUsername("qwert");
         JsonResult jr = new JsonResult();
         jr.success(qwert);
         return jr;
-    }
+    }*/
 }
 

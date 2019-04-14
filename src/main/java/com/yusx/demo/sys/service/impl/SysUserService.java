@@ -1,6 +1,7 @@
 package com.yusx.demo.sys.service.impl;
 
 import com.yusx.demo.sys.entity.Menu;
+import com.yusx.demo.sys.entity.Router;
 import com.yusx.demo.sys.entity.SysPermission;
 import com.yusx.demo.sys.entity.SysUser;
 import com.yusx.demo.sys.mapper.SysUserMapper;
@@ -28,22 +29,27 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implemen
     private SysUserMapper sysUserMapper;
 
     @Override
-    public Set<String> findRoles(String username) {
-        List<String> roles = sysUserMapper.findRoles(username);
+    public Set<String> findRoleCodesByUsername(String username) {
+        List<String> roles = sysUserMapper.selectRoleCodesByUsername(username);
         Set<String> roleSet = new HashSet<>(roles);
         return roleSet;
     }
 
     @Override
-    public Set<String> findPermissionsCode(String username) {
-        List<String> permissions = sysUserMapper.findPermissionsCode(username);
+    public Set<String> findPermissionCodesByUsername(String username) {
+        List<String> permissions = sysUserMapper.selectPermissionCodesByUsername(username);
         Set<String> permissionSet = new HashSet<>(permissions);
         return permissionSet;
     }
 
     @Override
-    public List<Menu> findPermissions(String username) {
-        List<Menu> permissions = sysUserMapper.findPermissions(username);
+    public List<Menu> findUserMenusByUsername(String username) {
+        List<Menu> permissions = sysUserMapper.selectUserMenusByUsername(username);
         return permissions;
+    }
+
+    @Override
+    public List<Router> findUserRoutersByUsername(String username) {
+        return sysUserMapper.selectUserRoutersByUsername(username);
     }
 }

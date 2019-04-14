@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yusx.demo.sys.mapper.SysUserMapper">
 
-    <select id="findRoles" parameterType="java.lang.String" resultType="java.lang.String">
+    <!--获取用户拥有的角色编号-->
+    <select id="selectRoleCodesByUsername" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
             r.roleCode
         FROM
@@ -13,7 +14,8 @@
             where u.userName = #{_parameter,jdbcType=VARCHAR}
     </select>
 
-    <select id="findPermissionsCode" parameterType="java.lang.String" resultType="java.lang.String">
+    <!--获取用户拥有的权限编号-->
+    <select id="selectPermissionCodesByUsername" parameterType="java.lang.String" resultType="java.lang.String">
       SELECT
             p.perCode
         FROM
@@ -34,22 +36,16 @@
         <result property="name" column="perName"/>
         <result property="path" column="perPath"/>
         <result property="parent" column="parent"/>
-
-        <result property="routerName" column="routerName"/>
-        <result property="routerPath" column="routerPath"/>
-        <result property="routerComponenet" column="routerComponenet"/>
     </resultMap>
 
-    <select id="findPermissions" parameterType="java.lang.String" resultMap="MenuResult">
+    <!--获取用户菜单-->
+    <select id="selectUserMenusByUsername" parameterType="java.lang.String" resultMap="MenuResult">
       SELECT
             p.perId,
             p.perCode,
             p.perName,
             p.perPath,
-            p.parent,
-            p.routerName,
-            p.routerPath,
-            p.routerComponent
+            p.parent
         FROM
             sysUser u
             JOIN sysUserRole ur
@@ -60,5 +56,38 @@
             AND r.roleId = rp.roleId
             AND rp.permissionid = p.perId
             where u.userName = #{_parameter,jdbcType=VARCHAR}
+    </select>
+
+    <resultMap id="RouterResult" type="com.yusx.demo.sys.entity.Router">
+        <id property="id" column="perId"/>
+        <result property="parent" column="parent"/>
+        <result property="routerPath" column="routerPath"/>
+        <result property="routerName" column="routerName"/>
+        <result property="routerComponent" column="routerComponent"/>
+    </resultMap>
+    <!--获取用户路由-->
+    <select id="selectUserRoutersByUsername" parameterType="java.lang.String" resultMap="RouterResult">
+      SELECT
+            p.perId,
+            p.parent,
+            p.routerPath,
+            p.routerName,
+            p.routerComponent
+        FROM
+            sysUser u
+            JOIN sysUserRole ur
+            JOIN sysRole r
+            JOIN sysRolePermission rp
+            JOIN sysPermission p ON u.userId = ur.userid
+            AND ur.roleid = r.roleId
+            AND r.roleId = rp.roleId
+            AND rp.permissionid = p.perId
+            where
+            1=1
+            and  p.routerName is not null
+            and p.routerName != ''
+        <if test="_parameter != null and _parameter != ''">
+                and u.userName = #{_parameter,jdbcType=VARCHAR}
+            </if>
     </select>
 </mapper>
